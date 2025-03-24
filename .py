@@ -1,15 +1,15 @@
 import pandas as pd
 from IPython.display import display
 
-GEM_df = pd.read_excel("data/EU_monthly_GEM_data.xlsx")
+GEM_df = pd.read_excel("data/EU_GEM_data.xlsx")
 WDI_df = pd.read_excel("data/EU_WDI_data.xlsx")
 
-GEM_df = GEM_df.drop(columns=['Time Code', 'CPI Price, % y-o-y, median weighted, seas. adj., [CPTOTSAXMZGY]', 'Nominal Effective Exchange Rate,,,, [NEER]', 'Real Effective Exchange Rate,,,, [REER]', 'Country'])
-WDI_df = WDI_df.drop(columns=['Time Code', 'Country Name'])
+GEM_df = GEM_df.drop(columns=['Time Code', 'CPI Price, % y-o-y, median weighted, seas. adj., [CPTOTSAXMZGY]', 'Nominal Effective Exchange Rate,,,, [NEER]', 'Real Effective Exchange Rate,,,, [REER]'])
+WDI_df = WDI_df.drop(columns=['Time Code', 'Country Name', "Educational attainment, at least Master's or equivalent, population 25+, total (%) (cumulative) [SE.TER.CUAT.MS.ZS]", "Educational attainment, Doctoral or equivalent, population 25+, total (%) (cumulative) [SE.TER.CUAT.DO.ZS]"])
 WDI_df = WDI_df.rename({"Time": "Year"}, axis=1)
 
-GEM_df = GEM_df.reset_index()
-WDI_df = WDI_df.reset_index()
+GEM_df = GEM_df.reset_index(drop=True)
+WDI_df = WDI_df.reset_index(drop=True)
 
 GEM_df['Year'] = GEM_df['Time'].str[:4]
 GEM_df['Time'] = GEM_df['Time'].astype(str)
@@ -34,32 +34,87 @@ print(len(count_countries))
 display(df.head(3))
 # df.to_excel("data/EU_Joined_data.xlsx")
 
+joined_df = df
 
-for col in df.columns:
-    if col not in ["Time", "Country Code"]:
-        df[col] = pd.to_numeric(df[col], errors='coerce')
+for col in joined_df.columns:
+    if col not in ["Time", "Country Code", "Country"]:
+        joined_df[col] = pd.to_numeric(joined_df[col], errors='coerce')
 
-df['Time'] = df['Time'].astype("string")
-df['Country Code'] = df['Country Code'].astype("string")
-
-
-df = df[~df['Country Code'].isin(['EST', 'MLT', 'LTU'])]
-df['Year'] = pd.to_numeric(df['Year'], errors='coerce')
-df = df[df['Year'] > 1993]
-df = df[df['Time'] < "2024M04"]
-df = df.sort_values(by=["Country Code", "Time"])
+joined_df['Time'] = joined_df['Time'].astype("string")
+joined_df['Country Code'] = joined_df['Country Code'].astype("string")
+joined_df['Country'] = joined_df['Country'].astype("string")
 
 
+joined_df = joined_df[~joined_df['Country Code'].isin(['EST', 'MLT', 'LTU', 'HRV', 'CYP', 'CZE', 'GRC', 'SVK', 'AUT', 'FRA', 'HUN', 'YUG', 'CHE', 'GEO', 'RUS', 'BGR', 'SVN', 'DNK'])]
+joined_df['Year'] = pd.to_numeric(joined_df['Year'], errors='coerce')
+joined_df = joined_df[joined_df['Year'] > 2009]
+joined_df = joined_df[joined_df['Time'] < "2024M04"]
+joined_df = joined_df.sort_values(by=["Country Code", "Time"])
 
-print(df.isna().sum().sum())
 
-# count_countries = df["Country Code"].value_counts()
+
+print(joined_df.isna().sum().sum())
+
+# count_countries = joined_df["Country Code"].value_counts()
 # print(len(count_countries))
 
-df = df.groupby(["Country Code"], as_index=False).ffill()
-df = df.reset_index()
-print(df.dtypes)
-df.to_excel("data/EU_cleaned_data.xlsx", index=False)
+for col in joined_df.columns:
+    joined_df[col] = joined_df.groupby(["Country Code"])[col].ffill()
 
-print(df.isna().sum().sum())
-display(df.head(3))
+joined_df = joined_df.reset_index()
+print(joined_df.dtypes)
+joined_df.to_excel("data/EU_cleaned_data.xlsx", index=False)
+
+
+print(joined_df.isna().sum().sum())
+print("\n\n\n\n\n")
+print(joined_df.shape)
+print(joined_df.groupby("Country Code").apply(lambda x: x.isnull().sum().sum()))
+display(joined_df.head(3))
+
+import statsmodels.api as sm
+import linearmodels.typing  # Force submodule import
+from linearmodels.panel import PanelOLS
+
+analysis_df = joined_df
+
+# Calculate net exports if not already computed
+# analysis_df.columns = ['index', 'Time', 'Country', 'Country Code', 'CPI Price', 'Exports, not seas. adj', 'Exports, seas. adj', 'Imports, not seas. adj', 'Imports, seas. adj', 'Industrial Production, not seas. adj', 'Industrial Production, seas. adj', 'Official exchange rate', 'Year', 'Labor force', 'Labor force participation rate ILO estimate', 'Labor force participation rate national estimate', 'Labor force with advanced education', 'Labor force with basic education', 'Labor force with intermediate education', ]
+analysis_df['Net Exports seas. adj'] = analysis_df['Exports Merchandise, Customs, current US$, millions, seas. adj. [DXGSRMRCHSACD]'] - analysis_df['Imports Merchandise, Customs, current US$, millions, seas. adj. [DMGSRMRCHSACD]']
+analysis_df['Net Exports not seas. adj'] = analysis_df['Exports Merchandise, Customs, current US$, millions, not seas. adj. [DXGSRMRCHNSCD]'] - analysis_df['Imports Merchandise, Customs, current US$, millions, not seas. adj. [DMGSRMRCHNSCD]']
+analysis_df['Lag Net Exports seas. adj'] = analysis_df.groupby("Country Code")['Net Exports seas. adj'].shift(1)
+analysis_df.reset_index()
+analysis_df['Lag Net Exports not seas. adj'] = analysis_df.groupby("Country Code")['Net Exports not seas. adj'].shift(1)
+analysis_df.reset_index()
+analysis_df = analysis_df.dropna(subset=['Lag Net Exports seas. adj', 'Lag Net Exports not seas. adj'])
+
+# Set the MultiIndex for panel data: Country Code and Year
+analysis_df = analysis_df.set_index(["Country Code", "Year"])
+
+# Specify the independent variables.
+# Adjust the variable names to match your actual DataFrame columns.
+exog_vars = ['Lag Net Exports seas. adj', 'Official exchange rate, LCU per USD, period average,, [DPANUSLCU]', 'CPI Price, % y-o-y, not seas. adj.,, [CPTOTSAXNZGY]', 'Industrial Production, constant US$, seas. adj.,, [IPTOTSAKD]', 'Labor force, total [SL.TLF.TOTL.IN]', "Educational attainment, at least Bachelor's or equivalent, population 25+, total (%) (cumulative) [SE.TER.CUAT.BA.ZS]", "Educational attainment, at least completed lower secondary, population 25+, total (%) (cumulative) [SE.SEC.CUAT.LO.ZS]", "Educational attainment, at least completed post-secondary, population 25+, total (%) (cumulative) [SE.SEC.CUAT.PO.ZS]", "Educational attainment, at least completed primary, population 25+ years, total (%) (cumulative) [SE.PRM.CUAT.ZS]", "Educational attainment, at least completed short-cycle tertiary, population 25+, total (%) (cumulative) [SE.TER.CUAT.ST.ZS]", "Educational attainment, at least completed upper secondary, population 25+, total (%) (cumulative) [SE.SEC.CUAT.UP.ZS]"]
+# If your exchange rate column is named something like 'Official exchange rate, LCU per USD, period average,, [DPANUSLCU]',
+# replace 'ExRate' with that exact name (or alias it beforehand).
+
+# Create the exogenous DataFrame and add a constant.
+exog = analysis_df[exog_vars]
+exog = sm.add_constant(exog)
+
+# Define the dependent variable.
+dep = analysis_df['Net Exports seas. adj']
+
+# Run the PanelOLS model with entity (country) and time fixed effects.
+model = PanelOLS(
+    dependent=dep, 
+    exog=exog, 
+    entity_effects=True, 
+    time_effects=True, 
+    drop_absorbed=True
+)
+results = model.fit(cov_type='clustered', cluster_entity=True)
+print(results.summary)
+
+
+# print(results.summary)
+display(analysis_df.head(3))
