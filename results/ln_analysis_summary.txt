@@ -1,16 +1,16 @@
                             PanelOLS Estimation Summary                            
 ===================================================================================
-Dep. Variable:     Net Exports seas. adj   R-squared:                        0.6389
-Estimator:                      PanelOLS   R-squared (Between):              0.8232
-No. Observations:                   2325   R-squared (Within):               0.6389
-Date:                   Mon, Mar 24 2025   R-squared (Overall):              0.8107
-Time:                           19:09:17   Log-likelihood                -2.027e+04
+Dep. Variable:     Net Exports seas. adj   R-squared:                        0.6385
+Estimator:                      PanelOLS   R-squared (Between):              0.8345
+No. Observations:                   2325   R-squared (Within):               0.6385
+Date:                   Wed, Mar 26 2025   R-squared (Overall):              0.8211
+Time:                           13:50:02   Log-likelihood                -2.027e+04
 Cov. Estimator:                Clustered                                           
-                                           F-statistic:                      369.83
+                                           F-statistic:                      369.16
 Entities:                             15   P-value                           0.0000
 Avg Obs:                          155.00   Distribution:                 F(11,2299)
 Min Obs:                          155.00                                           
-Max Obs:                          155.00   F-statistic (robust):             1608.4
+Max Obs:                          155.00   F-statistic (robust):             1140.5
                                            P-value                           0.0000
 Time periods:                        155   Distribution:                 F(11,2299)
 Avg Obs:                          15.000                                           
@@ -21,21 +21,21 @@ Max Obs:                          15.000
 ===============================================================================================================================================================================================
                                                                                                                              Parameter  Std. Err.     T-stat    P-value    Lower CI    Upper CI
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-const                                                                                                                       -3.257e+04  2.975e+04    -1.0948     0.2737   -9.09e+04   2.577e+04
-Lag Net Exports seas. adj                                                                                                       0.7840     0.0330     23.793     0.0000      0.7194      0.8486
-Official exchange rate, LCU per USD, period average,, [DPANUSLCU]                                                               1.5480     0.2809     5.5098     0.0000      0.9970      2.0989
-CPI Price, % y-o-y, not seas. adj.,, [CPTOTSAXNZGY]                                                                            -51.403     29.069    -1.7683     0.0771     -108.41      5.6005
-ln_Industial_Production seas. adj                                                                                               594.94     441.00     1.3491     0.1774     -269.86      1459.7
-ln_Labor                                                                                                                        1453.4     1344.0     1.0814     0.2796     -1182.2      4089.0
-Educational attainment, at least Bachelor's or equivalent, population 25+, total (%) (cumulative) [SE.TER.CUAT.BA.ZS]          -4.7533     3.1041    -1.5313     0.1258     -10.840      1.3337
-Educational attainment, at least completed lower secondary, population 25+, total (%) (cumulative) [SE.SEC.CUAT.LO.ZS]         -5.6241     6.1666    -0.9120     0.3619     -17.717      6.4686
-Educational attainment, at least completed post-secondary, population 25+, total (%) (cumulative) [SE.SEC.CUAT.PO.ZS]          -31.035     33.236    -0.9338     0.3505     -96.211      34.141
-Educational attainment, at least completed primary, population 25+ years, total (%) (cumulative) [SE.PRM.CUAT.ZS]              -44.599     50.502    -0.8831     0.3773     -143.63      54.435
-Educational attainment, at least completed short-cycle tertiary, population 25+, total (%) (cumulative) [SE.TER.CUAT.ST.ZS]     36.103     14.727     2.4515     0.0143      7.2231      64.983
-Educational attainment, at least completed upper secondary, population 25+, total (%) (cumulative) [SE.SEC.CUAT.UP.ZS]          16.949     17.858     0.9491     0.3427     -18.072      51.969
+const                                                                                                                       -3.327e+04   3.02e+04    -1.1018     0.2707  -9.249e+04   2.595e+04
+Lag Net Exports seas. adj                                                                                                       0.7863     0.0329     23.933     0.0000      0.7219      0.8507
+Official exchange rate percent increase                                                                                         12.227     36.989     0.3306     0.7410     -60.308      84.763
+CPI Price, % y-o-y, not seas. adj.,, [CPTOTSAXNZGY]                                                                            -49.465     28.153    -1.7570     0.0791     -104.67      5.7434
+ln_Industial_Production seas. adj                                                                                               539.99     433.48     1.2457     0.2130     -310.07      1390.0
+ln_Labor                                                                                                                        1526.4     1393.7     1.0952     0.2735     -1206.7      4259.5
+Educational attainment, at least Bachelor's or equivalent, population 25+, total (%) (cumulative) [SE.TER.CUAT.BA.ZS]          -4.1251     2.7619    -1.4936     0.1354     -9.5412      1.2910
+Educational attainment, at least completed lower secondary, population 25+, total (%) (cumulative) [SE.SEC.CUAT.LO.ZS]         -4.8410     5.8238    -0.8312     0.4059     -16.261      6.5794
+Educational attainment, at least completed post-secondary, population 25+, total (%) (cumulative) [SE.SEC.CUAT.PO.ZS]          -30.018     32.106    -0.9350     0.3499     -92.978      32.943
+Educational attainment, at least completed primary, population 25+ years, total (%) (cumulative) [SE.PRM.CUAT.ZS]              -35.060     50.895    -0.6889     0.4910     -134.86      64.744
+Educational attainment, at least completed short-cycle tertiary, population 25+, total (%) (cumulative) [SE.TER.CUAT.ST.ZS]     33.407     14.794     2.2580     0.0240      4.3947      62.418
+Educational attainment, at least completed upper secondary, population 25+, total (%) (cumulative) [SE.SEC.CUAT.UP.ZS]          18.124     17.771     1.0199     0.3079     -16.725      52.972
 ===============================================================================================================================================================================================
 
-F-test for Poolability: 17.083
+F-test for Poolability: 16.822
 P-value: 0.0000
 Distribution: F(14,2299)
 

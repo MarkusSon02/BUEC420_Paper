@@ -58,12 +58,21 @@ joined_df['Time'] = pd.to_datetime(joined_df['Time'].str.replace('M', '-') + '-0
 
 print("Count of null values: ", joined_df.isna().sum().sum())
 
-# count_countries = joined_df["Country Code"].value_counts()
-# print(len(count_countries))
+count_countries = joined_df["Country Code"].value_counts()
+print("Number of countries:", len(count_countries))
 joined_df.to_excel("data/EU_semi_cleaned_data.xlsx", index=False)
 
 for col in joined_df.columns:
     joined_df[col] = joined_df.groupby(["Country Code"])[col].ffill()
+
+# Calculate the percentage change for the official exchange rate
+joined_df["Official exchange rate percent increase"] = (
+    joined_df.groupby("Country Code")["Official exchange rate, LCU per USD, period average,, [DPANUSLCU]"]
+      .pct_change() * 100
+)
+
+# Display the first few rows to check the new column
+print(joined_df[["Country Code", "Time", "Official exchange rate percent increase"]].head(10))
 
 joined_df = joined_df.reset_index()
 # print(joined_df.dtypes)
@@ -86,7 +95,7 @@ analysis_df['Lag Net Exports seas. adj'] = analysis_df.groupby("Country Code")['
 analysis_df.reset_index()
 analysis_df['Lag Net Exports not seas. adj'] = analysis_df.groupby("Country Code")['Net Exports not seas. adj'].shift(1)
 analysis_df.reset_index()
-analysis_df = analysis_df.dropna(subset=['Lag Net Exports seas. adj', 'Lag Net Exports not seas. adj'])
+analysis_df = analysis_df.dropna(subset=['Lag Net Exports seas. adj', 'Lag Net Exports not seas. adj', "Official exchange rate percent increase"])
 
 # analysis_df['ln_Net_Exports seas. adj'] = np.log(analysis_df['Net Exports seas. adj'])
 # analysis_df['ln_Net_Exports not seas. adj'] = np.log(analysis_df['Net Exports not seas. adj'])
@@ -102,9 +111,7 @@ analysis_df.to_excel("data/EU_analysis_data.xlsx")
 
 # Specify the independent variables.
 # Adjust the variable names to match your actual DataFrame columns.
-exog_vars = ['Lag Net Exports seas. adj', 'Official exchange rate, LCU per USD, period average,, [DPANUSLCU]', 'CPI Price, % y-o-y, not seas. adj.,, [CPTOTSAXNZGY]', 'Industrial Production, constant US$, seas. adj.,, [IPTOTSAKD]', 'Labor force, total [SL.TLF.TOTL.IN]', "Educational attainment, at least Bachelor's or equivalent, population 25+, total (%) (cumulative) [SE.TER.CUAT.BA.ZS]", "Educational attainment, at least completed lower secondary, population 25+, total (%) (cumulative) [SE.SEC.CUAT.LO.ZS]", "Educational attainment, at least completed post-secondary, population 25+, total (%) (cumulative) [SE.SEC.CUAT.PO.ZS]", "Educational attainment, at least completed primary, population 25+ years, total (%) (cumulative) [SE.PRM.CUAT.ZS]", "Educational attainment, at least completed short-cycle tertiary, population 25+, total (%) (cumulative) [SE.TER.CUAT.ST.ZS]", "Educational attainment, at least completed upper secondary, population 25+, total (%) (cumulative) [SE.SEC.CUAT.UP.ZS]"]
-# If your exchange rate column is named something like 'Official exchange rate, LCU per USD, period average,, [DPANUSLCU]',
-# replace 'ExRate' with that exact name (or alias it beforehand).
+exog_vars = ['Lag Net Exports seas. adj', "Official exchange rate percent increase", 'CPI Price, % y-o-y, not seas. adj.,, [CPTOTSAXNZGY]', 'Industrial Production, constant US$, seas. adj.,, [IPTOTSAKD]', 'Labor force, total [SL.TLF.TOTL.IN]', "Educational attainment, at least Bachelor's or equivalent, population 25+, total (%) (cumulative) [SE.TER.CUAT.BA.ZS]", "Educational attainment, at least completed lower secondary, population 25+, total (%) (cumulative) [SE.SEC.CUAT.LO.ZS]", "Educational attainment, at least completed post-secondary, population 25+, total (%) (cumulative) [SE.SEC.CUAT.PO.ZS]", "Educational attainment, at least completed primary, population 25+ years, total (%) (cumulative) [SE.PRM.CUAT.ZS]", "Educational attainment, at least completed short-cycle tertiary, population 25+, total (%) (cumulative) [SE.TER.CUAT.ST.ZS]", "Educational attainment, at least completed upper secondary, population 25+, total (%) (cumulative) [SE.SEC.CUAT.UP.ZS]"]
 
 # Create the exogenous DataFrame and add a constant.
 exog = analysis_df[exog_vars]
@@ -122,9 +129,7 @@ model = PanelOLS(
 results = model.fit(cov_type='clustered', cluster_entity=True)
 # print(results.summary)
 
-ln_accounted_exog_vars = ['Lag Net Exports seas. adj', 'Official exchange rate, LCU per USD, period average,, [DPANUSLCU]', 'CPI Price, % y-o-y, not seas. adj.,, [CPTOTSAXNZGY]', 'ln_Industial_Production seas. adj', 'ln_Labor', "Educational attainment, at least Bachelor's or equivalent, population 25+, total (%) (cumulative) [SE.TER.CUAT.BA.ZS]", "Educational attainment, at least completed lower secondary, population 25+, total (%) (cumulative) [SE.SEC.CUAT.LO.ZS]", "Educational attainment, at least completed post-secondary, population 25+, total (%) (cumulative) [SE.SEC.CUAT.PO.ZS]", "Educational attainment, at least completed primary, population 25+ years, total (%) (cumulative) [SE.PRM.CUAT.ZS]", "Educational attainment, at least completed short-cycle tertiary, population 25+, total (%) (cumulative) [SE.TER.CUAT.ST.ZS]", "Educational attainment, at least completed upper secondary, population 25+, total (%) (cumulative) [SE.SEC.CUAT.UP.ZS]"]
-# If your exchange rate column is named something like 'Official exchange rate, LCU per USD, period average,, [DPANUSLCU]',
-# replace 'ExRate' with that exact name (or alias it beforehand).
+ln_accounted_exog_vars = ['Lag Net Exports seas. adj', "Official exchange rate percent increase", 'CPI Price, % y-o-y, not seas. adj.,, [CPTOTSAXNZGY]', 'ln_Industial_Production seas. adj', 'ln_Labor', "Educational attainment, at least Bachelor's or equivalent, population 25+, total (%) (cumulative) [SE.TER.CUAT.BA.ZS]", "Educational attainment, at least completed lower secondary, population 25+, total (%) (cumulative) [SE.SEC.CUAT.LO.ZS]", "Educational attainment, at least completed post-secondary, population 25+, total (%) (cumulative) [SE.SEC.CUAT.PO.ZS]", "Educational attainment, at least completed primary, population 25+ years, total (%) (cumulative) [SE.PRM.CUAT.ZS]", "Educational attainment, at least completed short-cycle tertiary, population 25+, total (%) (cumulative) [SE.TER.CUAT.ST.ZS]", "Educational attainment, at least completed upper secondary, population 25+, total (%) (cumulative) [SE.SEC.CUAT.UP.ZS]"]
 
 # Create the exogenous DataFrame and add a constant.
 ln_accounted_exog = analysis_df[ln_accounted_exog_vars]
