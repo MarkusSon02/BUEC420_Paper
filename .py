@@ -147,10 +147,30 @@ ln_accounted_model = PanelOLS(
 ln_accounted_results = ln_accounted_model.fit(cov_type='clustered', cluster_entity=True)
 print(ln_accounted_results.summary)
 
+no_lag_exog_vars = [ "Official exchange rate percent increase", 'CPI Price, % y-o-y, not seas. adj.,, [CPTOTSAXNZGY]', 'ln_Industial_Production seas. adj', 'ln_Labor', "Educational attainment, at least Bachelor's or equivalent, population 25+, total (%) (cumulative) [SE.TER.CUAT.BA.ZS]", "Educational attainment, at least completed lower secondary, population 25+, total (%) (cumulative) [SE.SEC.CUAT.LO.ZS]", "Educational attainment, at least completed post-secondary, population 25+, total (%) (cumulative) [SE.SEC.CUAT.PO.ZS]", "Educational attainment, at least completed primary, population 25+ years, total (%) (cumulative) [SE.PRM.CUAT.ZS]", "Educational attainment, at least completed short-cycle tertiary, population 25+, total (%) (cumulative) [SE.TER.CUAT.ST.ZS]", "Educational attainment, at least completed upper secondary, population 25+, total (%) (cumulative) [SE.SEC.CUAT.UP.ZS]"]
+
+# Create the exogenous DataFrame and add a constant.
+no_lag_exog = analysis_df[no_lag_exog_vars]
+no_lag_exog = sm.add_constant(no_lag_exog)
+
+# Define the dependent variable.
+no_lag_dep = analysis_df['Net Exports seas. adj']
+
+# Run the PanelOLS model with entity (country) and time fixed effects.
+ln_accounted_model = PanelOLS(
+    dependent=no_lag_dep, 
+    exog=no_lag_exog, 
+    entity_effects=True
+)
+no_lag_results = ln_accounted_model.fit(cov_type='clustered', cluster_entity=True)
+print(no_lag_results.summary)
+
 with open("results/analysis_summary.txt", "w") as f:
     f.write(results.summary.as_text())
 with open("results/ln_analysis_summary.txt", "w") as f:
     f.write(ln_accounted_results.summary.as_text())
+with open("results/no_lag_results.txt", "w") as f:
+    f.write(no_lag_results.summary.as_text())
 
 # print(results.summary)
 display(analysis_df.head(3))
