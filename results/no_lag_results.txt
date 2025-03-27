@@ -4,7 +4,7 @@ Dep. Variable:     Net Exports seas. adj   R-squared:                        0.0
 Estimator:                      PanelOLS   R-squared (Between):             -2.4515
 No. Observations:                   2325   R-squared (Within):               0.0676
 Date:                   Wed, Mar 26 2025   R-squared (Overall):             -2.2803
-Time:                           15:00:50   Log-likelihood                -2.137e+04
+Time:                           20:01:56   Log-likelihood                -2.137e+04
 Cov. Estimator:                Clustered                                           
                                            F-statistic:                      16.683
 Entities:                             15   P-value                           0.0000
