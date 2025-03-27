@@ -1,0 +1,42 @@
+                              PanelOLS Estimation Summary                              
+=======================================================================================
+Dep. Variable:     Net Exports not seas. adj   R-squared:                        0.3406
+Estimator:                          PanelOLS   R-squared (Between):              0.8386
+No. Observations:                       2259   R-squared (Within):               0.3406
+Date:                       Thu, Mar 27 2025   R-squared (Overall):              0.8246
+Time:                               00:33:04   Log-likelihood                -2.068e+04
+Cov. Estimator:                    Clustered                                           
+                                               F-statistic:                      104.54
+Entities:                                 22   P-value                           0.0000
+Avg Obs:                              102.68   Distribution:                 F(11,2226)
+Min Obs:                              93.000                                           
+Max Obs:                              107.00   F-statistic (robust):             48.782
+                                               P-value                           0.0000
+Time periods:                            107   Distribution:                 F(11,2226)
+Avg Obs:                              21.112                                           
+Min Obs:                              8.0000                                           
+Max Obs:                              22.000                                           
+                                                                                       
+                                                  Parameter Estimates                                                   
+========================================================================================================================
+                                                      Parameter  Std. Err.     T-stat    P-value    Lower CI    Upper CI
+------------------------------------------------------------------------------------------------------------------------
+const                                                 1.931e+04   4.91e+04     0.3933     0.6942  -7.698e+04   1.156e+05
+Lag Net Exports not seas. adj                            0.5640     0.0790     7.1438     0.0000      0.4092      0.7188
+Real Effective Exchange Rate percent change             -159.11     73.984    -2.1507     0.0316     -304.20     -14.029
+Official exchange rate percent change                   -44.364     33.630    -1.3192     0.1872     -110.31      21.586
+CPI Price, % y-o-y, not seas. adj.,, [CPTOTSAXNZGY]     -117.73     63.190    -1.8630     0.0626     -241.64      6.1932
+ln_Industial_Production not seas. adj                    1688.5     1124.9     1.5011     0.1335     -517.41      3894.5
+ln_Labor                                                -3655.3     2731.4    -1.3383     0.1809     -9011.6      1700.9
+GDP growth (annual %) [NY.GDP.MKTP.KD.ZG]                295.30     235.31     1.2550     0.2096     -166.14      756.74
+GDP per capita growth (annual %) [NY.GDP.PCAP.KD.ZG]    -315.75     249.28    -1.2666     0.2054     -804.60      173.10
+Winter                                                  -9.9253     271.53    -0.0366     0.9708     -542.39      522.54
+Spring                                                  -173.28     67.578    -2.5642     0.0104     -305.80     -40.758
+Summer                                                  -358.00     141.07    -2.5378     0.0112     -634.64     -81.364
+========================================================================================================================
+
+F-test for Poolability: 30.959
+P-value: 0.0000
+Distribution: F(21,2226)
+
+Included effects: Entity
