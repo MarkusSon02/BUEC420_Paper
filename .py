@@ -146,7 +146,7 @@ analysis_df = analysis_df[(analysis_df['Official exchange rate percent change'] 
 
 # Specify the independent variables.
 # Adjust the variable names to match your actual DataFrame columns.
-exog_vars = ['Lag Net Exports not seas. adj', "Real Effective Exchange Rate percent change", "Official exchange rate percent change", 'CPI Price, % y-o-y, not seas. adj.,, [CPTOTSAXNZGY]', 'ln_Industial_Production not seas. adj', 'ln_Labor', "GDP growth (annual %) [NY.GDP.MKTP.KD.ZG]", "GDP per capita growth (annual %) [NY.GDP.PCAP.KD.ZG]", "Winter", "Spring", "Summer"]
+exog_vars = ['Lag Net Exports not seas. adj', "Real Effective Exchange Rate percent change", 'CPI Price, % y-o-y, not seas. adj.,, [CPTOTSAXNZGY]', 'ln_Industial_Production not seas. adj', 'ln_Labor', "GDP growth (annual %) [NY.GDP.MKTP.KD.ZG]", "GDP per capita growth (annual %) [NY.GDP.PCAP.KD.ZG]", "Winter", "Spring", "Summer"]
 
 # # print("STD and Corr 1:")
 # # print(analysis_df.groupby("Country Code")[exog_vars].std())
@@ -168,7 +168,7 @@ model = PanelOLS(
 results = model.fit(cov_type='clustered', cluster_entity=True)
 print(results.summary)
 
-exog_vars_2 = ['Lag Net Exports not seas. adj', "Real Effective Exchange Rate,,,, [REER]", "Official exchange rate, LCU per USD, period average,, [DPANUSLCU]", 'CPI Price, % y-o-y, not seas. adj.,, [CPTOTSAXNZGY]', 'ln_Labor', "GDP growth (annual %) [NY.GDP.MKTP.KD.ZG]", "GDP per capita growth (annual %) [NY.GDP.PCAP.KD.ZG]", "Exports of goods and services (% of GDP) [NE.EXP.GNFS.ZS]", "Imports of goods and services (% of GDP) [NE.IMP.GNFS.ZS]", "Unemployment, total (% of total labor force) (modeled ILO estimate) [SL.UEM.TOTL.ZS]","Winter", "Spring", "Summer"]
+exog_vars_2 = ['Lag Net Exports not seas. adj', "Official exchange rate percent change", 'CPI Price, % y-o-y, not seas. adj.,, [CPTOTSAXNZGY]', 'ln_Labor', "GDP growth (annual %) [NY.GDP.MKTP.KD.ZG]", "GDP per capita growth (annual %) [NY.GDP.PCAP.KD.ZG]", "Exports of goods and services (% of GDP) [NE.EXP.GNFS.ZS]", "Imports of goods and services (% of GDP) [NE.IMP.GNFS.ZS]", "Unemployment, total (% of total labor force) (modeled ILO estimate) [SL.UEM.TOTL.ZS]","Winter", "Spring", "Summer"]
 
 # with open("results/STD_Corr_2.txt", "w") as f:
 #     f.write("Standard Deviation by Country:\n")
