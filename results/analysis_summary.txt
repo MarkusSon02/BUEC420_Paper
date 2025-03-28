@@ -1,0 +1,41 @@
+                          PanelOLS Estimation Summary                           
+================================================================================
+Dep. Variable:             ln_exports   R-squared:                        0.6344
+Estimator:                   PanelOLS   R-squared (Between):              0.8322
+No. Observations:                2259   R-squared (Within):               0.6344
+Date:                Thu, Mar 27 2025   R-squared (Overall):              0.8307
+Time:                        11:59:30   Log-likelihood                    2569.9
+Cov. Estimator:             Clustered                                           
+                                        F-statistic:                      386.40
+Entities:                          22   P-value                           0.0000
+Avg Obs:                       102.68   Distribution:                 F(10,2227)
+Min Obs:                       93.000                                           
+Max Obs:                       107.00   F-statistic (robust):             267.63
+                                        P-value                           0.0000
+Time periods:                     107   Distribution:                 F(10,2227)
+Avg Obs:                       21.112                                           
+Min Obs:                       8.0000                                           
+Max Obs:                       22.000                                           
+                                                                                
+                                                  Parameter Estimates                                                   
+========================================================================================================================
+                                                      Parameter  Std. Err.     T-stat    P-value    Lower CI    Upper CI
+------------------------------------------------------------------------------------------------------------------------
+const                                                    0.1100     3.0743     0.0358     0.9715     -5.9189      6.1389
+ln_lag_exports                                           0.6018     0.0611     9.8431     0.0000      0.4819      0.7217
+Official exchange rate percent change                   -0.0043     0.0011    -3.8887     0.0001     -0.0065     -0.0021
+CPI Price, % y-o-y, not seas. adj.,, [CPTOTSAXNZGY]      0.0016     0.0029     0.5464     0.5848     -0.0042      0.0074
+ln_Industial_Production not seas. adj                    0.4877     0.1134     4.3003     0.0000      0.2653      0.7102
+ln_Labor                                                -0.4669     0.1689    -2.7640     0.0058     -0.7981     -0.1356
+GDP growth (annual %) [NY.GDP.MKTP.KD.ZG]               -0.0052     0.0134    -0.3857     0.6998     -0.0314      0.0211
+GDP per capita growth (annual %) [NY.GDP.PCAP.KD.ZG] -4.406e-05     0.0135    -0.0033     0.9974     -0.0265      0.0264
+Winter                                                  -0.0370     0.0058    -6.3667     0.0000     -0.0484     -0.0256
+Spring                                                  -0.0033     0.0038    -0.8566     0.3917     -0.0107      0.0042
+Summer                                                  -0.0300     0.0060    -5.0000     0.0000     -0.0418     -0.0182
+========================================================================================================================
+
+F-test for Poolability: 62.050
+P-value: 0.0000
+Distribution: F(21,2227)
+
+Included effects: Entity

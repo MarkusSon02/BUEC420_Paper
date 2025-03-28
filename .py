@@ -89,6 +89,8 @@ analysis_df = joined_df
 analysis_df['Net Exports not seas. adj'] = analysis_df['Exports Merchandise, Customs, current US$, millions, not seas. adj. [DXGSRMRCHNSCD]'] - analysis_df['Imports Merchandise, Customs, current US$, millions, not seas. adj. [DMGSRMRCHNSCD]']
 # analysis_df['Lag Net Exports seas. adj'] = analysis_df.groupby("Country Code")['Net Exports seas. adj'].shift(1)
 analysis_df['Lag Net Exports not seas. adj'] = analysis_df.groupby("Country Code")['Net Exports not seas. adj'].shift(1)
+analysis_df['Lag Exports not seas. adj'] = analysis_df.groupby("Country Code")['Exports Merchandise, Customs, current US$, millions, not seas. adj. [DXGSRMRCHNSCD]'].shift(1)
+analysis_df['Lag Imports not seas. adj'] = analysis_df.groupby("Country Code")['Imports Merchandise, Customs, current US$, millions, not seas. adj. [DMGSRMRCHNSCD]'].shift(1)
 analysis_df["Official exchange rate percent change"] = analysis_df.groupby("Country Code")["Official exchange rate, LCU per USD, period average,, [DPANUSLCU]"].pct_change() * 100
 analysis_df["Nominal Effective Exchange Rate percent change"] = analysis_df.groupby("Country Code")["Nominal Effective Exchange Rate,,,, [NEER]"].pct_change() * 100
 analysis_df["Real Effective Exchange Rate percent change"] = analysis_df.groupby("Country Code")["Real Effective Exchange Rate,,,, [REER]"].pct_change() * 100
@@ -105,6 +107,10 @@ analysis_df['ln_Labor'] = np.log(analysis_df['Labor force, total [SL.TLF.TOTL.IN
 analysis_df['ln_Industial_Production not seas. adj'] = np.log(analysis_df['Industrial Production, constant US$,,, [IPTOTNSKD]'])
 analysis_df['ln_GDP'] = np.log(analysis_df['GDP (current US$) [NY.GDP.MKTP.CD]'])
 analysis_df['ln_GDP_per_capita'] = np.log(analysis_df['GDP per capita (current US$) [NY.GDP.PCAP.CD]'])
+analysis_df['ln_exports'] = np.log(analysis_df['Exports Merchandise, Customs, current US$, millions, not seas. adj. [DXGSRMRCHNSCD]'])
+analysis_df['ln_imports'] = np.log(analysis_df['Imports Merchandise, Customs, current US$, millions, not seas. adj. [DMGSRMRCHNSCD]'])
+analysis_df['ln_lag_exports'] = np.log(analysis_df['Lag Exports not seas. adj'])
+analysis_df['ln_lag_imports'] = np.log(analysis_df['Lag Imports not seas. adj'])
 
 analysis_df['Season'] = 'Winter'
 analysis_df.loc[(analysis_df['Month'] >= 3) & (analysis_df['Month'] <= 5), 'Season'] = 'Spring'
@@ -118,20 +124,20 @@ display(season_dummies.head(3))
 analysis_df = analysis_df.set_index(["Country Code", "Time"])
 analysis_df.to_excel("data/EU_analysis_data.xlsx")
 
-plt.boxplot(analysis_df['Official exchange rate percent change'])
-plt.title('Boxplot for Official exchange rate percent change')
-plt.ylabel('Official exchange rate percent change')
-plt.savefig('results/official_exchange_rate_percent_change_boxplot.png')
+# plt.scatter(analysis_df['Official exchange rate percent change'])
+# plt.title('Scatterplot for Official exchange rate percent change')
+# plt.ylabel('Official exchange rate percent change')
+# plt.savefig('results/official_exchange_rate_percent_change_boxplot.png')
 
-plt.boxplot(analysis_df['Real Effective Exchange Rate percent change'])
-plt.title('Boxplot for Real Effective Exchange Rate percent change')
-plt.ylabel('Real Effective Exchange Rate percent change')
-plt.savefig('results/real_exchange_rate_percent_change_boxplot.png')
+# plt.scatter(analysis_df['Real Effective Exchange Rate percent change'])
+# plt.title('Scatterplot for Real Effective Exchange Rate percent change')
+# plt.ylabel('Real Effective Exchange Rate percent change')
+# plt.savefig('results/real_exchange_rate_percent_change_boxplot.png')
 
-plt.boxplot(analysis_df['Nominal Effective Exchange Rate percent change'])
-plt.title('Boxplot for Nominal Effective Exchange Rate percent change')
-plt.ylabel('Nominal Effective Exchange Rate percent change')
-plt.savefig('results/nominal_exchange_rate_percent_change_boxplot.png')
+# plt.scatter(analysis_df['Nominal Effective Exchange Rate percent change'])
+# plt.title('Scatterplot for Nominal Effective Exchange Rate percent change')
+# plt.ylabel('Nominal Effective Exchange Rate percent change')
+# plt.savefig('results/nominal_exchange_rate_percent_change_boxplot.png')
 
 Q1 = analysis_df['Official exchange rate percent change'].quantile(0.25)
 Q3 = analysis_df['Official exchange rate percent change'].quantile(0.75)
@@ -146,7 +152,7 @@ analysis_df = analysis_df[(analysis_df['Official exchange rate percent change'] 
 
 # Specify the independent variables.
 # Adjust the variable names to match your actual DataFrame columns.
-exog_vars = ['Lag Net Exports not seas. adj', "Real Effective Exchange Rate percent change", 'CPI Price, % y-o-y, not seas. adj.,, [CPTOTSAXNZGY]', 'ln_Industial_Production not seas. adj', 'ln_Labor', "GDP growth (annual %) [NY.GDP.MKTP.KD.ZG]", "GDP per capita growth (annual %) [NY.GDP.PCAP.KD.ZG]", "Winter", "Spring", "Summer"]
+exog_vars = ['ln_lag_exports', "Official exchange rate percent change", 'CPI Price, % y-o-y, not seas. adj.,, [CPTOTSAXNZGY]', 'ln_Industial_Production not seas. adj', 'ln_Labor', "GDP growth (annual %) [NY.GDP.MKTP.KD.ZG]", "GDP per capita growth (annual %) [NY.GDP.PCAP.KD.ZG]", "Winter", "Spring", "Summer"]
 
 # # print("STD and Corr 1:")
 # # print(analysis_df.groupby("Country Code")[exog_vars].std())
@@ -157,7 +163,7 @@ exog = analysis_df[exog_vars]
 exog = sm.add_constant(exog)
 
 # Define the dependent variable.
-dep = analysis_df['Net Exports not seas. adj']
+dep = analysis_df['ln_exports']
 
 # Run the PanelOLS model with entity (country) and time fixed effects.
 model = PanelOLS(

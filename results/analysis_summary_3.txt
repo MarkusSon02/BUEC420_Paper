@@ -1,0 +1,44 @@
+                              PanelOLS Estimation Summary                              
+=======================================================================================
+Dep. Variable:     Net Exports not seas. adj   R-squared:                        0.3553
+Estimator:                          PanelOLS   R-squared (Between):              0.7217
+No. Observations:                       2259   R-squared (Within):               0.3553
+Date:                       Thu, Mar 27 2025   R-squared (Overall):              0.7111
+Time:                               11:59:30   Log-likelihood                -2.065e+04
+Cov. Estimator:                    Clustered                                           
+                                               F-statistic:                      94.301
+Entities:                                 22   P-value                           0.0000
+Avg Obs:                              102.68   Distribution:                 F(13,2224)
+Min Obs:                              93.000                                           
+Max Obs:                              107.00   F-statistic (robust):             89.805
+                                               P-value                           0.0000
+Time periods:                            107   Distribution:                 F(13,2224)
+Avg Obs:                              21.112                                           
+Min Obs:                              8.0000                                           
+Max Obs:                              22.000                                           
+                                                                                       
+                                                                  Parameter Estimates                                                                   
+========================================================================================================================================================
+                                                                                      Parameter  Std. Err.     T-stat    P-value    Lower CI    Upper CI
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+const                                                                                -1.657e+04  3.988e+04    -0.4155     0.6778  -9.478e+04   6.164e+04
+Lag Net Exports not seas. adj                                                            0.5151     0.0840     6.1298     0.0000      0.3503      0.6799
+Real Effective Exchange Rate,,,, [REER]                                                 -20.980     28.309    -0.7411     0.4587     -76.496      34.536
+Official exchange rate, LCU per USD, period average,, [DPANUSLCU]                       -0.0366     0.0438    -0.8345     0.4041     -0.1225      0.0494
+CPI Price, % y-o-y, not seas. adj.,, [CPTOTSAXNZGY]                                     -14.169     58.367    -0.2428     0.8082     -128.63      100.29
+ln_Labor                                                                                 982.15     2378.9     0.4128     0.6798     -3683.0      5647.3
+GDP growth (annual %) [NY.GDP.MKTP.KD.ZG]                                                562.33     288.55     1.9488     0.0514     -3.5329      1128.2
+GDP per capita growth (annual %) [NY.GDP.PCAP.KD.ZG]                                    -564.48     285.61    -1.9764     0.0482     -1124.6     -4.3945
+Exports of goods and services (% of GDP) [NE.EXP.GNFS.ZS]                                177.84     46.122     3.8559     0.0001      87.395      268.29
+Imports of goods and services (% of GDP) [NE.IMP.GNFS.ZS]                               -200.08     52.387    -3.8193     0.0001     -302.81     -97.348
+Unemployment, total (% of total labor force) (modeled ILO estimate) [SL.UEM.TOTL.ZS]     178.63     101.54     1.7591     0.0787     -20.502      377.76
+Winter                                                                                  -87.789     322.07    -0.2726     0.7852     -719.38      543.80
+Spring                                                                                  -151.53     64.738    -2.3407     0.0193     -278.48     -24.578
+Summer                                                                                  -430.18     135.54    -3.1739     0.0015     -695.97     -164.39
+========================================================================================================================================================
+
+F-test for Poolability: 34.237
+P-value: 0.0000
+Distribution: F(21,2224)
+
+Included effects: Entity
