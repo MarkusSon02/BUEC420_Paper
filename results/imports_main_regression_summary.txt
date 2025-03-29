@@ -1,0 +1,43 @@
+                          PanelOLS Estimation Summary                           
+================================================================================
+Dep. Variable:             ln_imports   R-squared:                        0.5329
+Estimator:                   PanelOLS   R-squared (Between):              0.7806
+No. Observations:                2247   R-squared (Within):               0.5329
+Date:                Thu, Mar 27 2025   R-squared (Overall):              0.7764
+Time:                        22:06:23   Log-likelihood                    2357.8
+Cov. Estimator:             Clustered                                           
+                                        F-statistic:                      210.46
+Entities:                          21   P-value                           0.0000
+Avg Obs:                       107.00   Distribution:                 F(12,2214)
+Min Obs:                       107.00                                           
+Max Obs:                       107.00   F-statistic (robust):             150.41
+                                        P-value                           0.0000
+Time periods:                     107   Distribution:                 F(12,2214)
+Avg Obs:                       21.000                                           
+Min Obs:                       21.000                                           
+Max Obs:                       21.000                                           
+                                                                                
+                                                                  Parameter Estimates                                                                   
+========================================================================================================================================================
+                                                                                      Parameter  Std. Err.     T-stat    P-value    Lower CI    Upper CI
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+const                                                                                    4.4434     2.2134     2.0075     0.0448      0.1028      8.7840
+ln_lag_imports                                                                           0.5972     0.0399     14.962     0.0000      0.5190      0.6755
+Official Exchange Rate percent change                                                   -0.0043     0.0009    -5.0870     0.0000     -0.0060     -0.0027
+CPI Price, % y-o-y, not seas. adj.,, [CPTOTSAXNZGY]                                      0.0061     0.0030     2.0634     0.0392      0.0003      0.0120
+ln_Labor                                                                                -0.0314     0.1230    -0.2553     0.7985     -0.2727      0.2098
+GDP growth (annual %) [NY.GDP.MKTP.KD.ZG]                                               -0.0210     0.0078    -2.6949     0.0071     -0.0363     -0.0057
+GDP per capita growth (annual %) [NY.GDP.PCAP.KD.ZG]                                     0.0192     0.0077     2.4840     0.0131      0.0040      0.0343
+Exports of goods and services (% of GDP) [NE.EXP.GNFS.ZS]                                0.0011     0.0019     0.5990     0.5492     -0.0025      0.0048
+Imports of goods and services (% of GDP) [NE.IMP.GNFS.ZS]                                0.0007     0.0019     0.3942     0.6935     -0.0030      0.0045
+Unemployment, total (% of total labor force) (modeled ILO estimate) [SL.UEM.TOTL.ZS]    -0.0116     0.0031    -3.7006     0.0002     -0.0177     -0.0054
+Winter                                                                                  -0.0579     0.0081    -7.1417     0.0000     -0.0738     -0.0420
+Spring                                                                                  -0.0068     0.0051    -1.3228     0.1860     -0.0168      0.0033
+Summer                                                                                  -0.0457     0.0102    -4.4783     0.0000     -0.0658     -0.0257
+========================================================================================================================================================
+
+F-test for Poolability: 31.129
+P-value: 0.0000
+Distribution: F(20,2214)
+
+Included effects: Entity

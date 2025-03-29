@@ -50,7 +50,7 @@ joined_df['Country'] = joined_df['Country'].astype("string")
 
 
 joined_df = joined_df[~joined_df['Country Code'].isin(['EST', 'MLT', 'LTU', 'HRV', 'CYP', 'CZE', 'GRC', 'SVK', 'AUT', 'FRA', 'HUN', 'YUG', 'CHE', 'GEO', 'RUS', 'BGR', 'SVN', 'DNK', 'ISL', 'GBR'])]
-joined_df = joined_df[~joined_df['Country Code'].isin(['ARE', 'ARG', 'AUS', 'BRA', 'JPN', 'MYS', 'NZL', 'PHL'])]
+joined_df = joined_df[~joined_df['Country Code'].isin(['ARE', 'ARG', 'AUS', 'BRA', 'JPN', 'MYS', 'NZL', 'PHL', 'USA'])]
 joined_df['Year'] = pd.to_numeric(joined_df['Year'], errors='coerce')
 joined_df = joined_df[joined_df['Year'] > 2009]
 joined_df = joined_df[joined_df['Year'] < 2019]
@@ -91,12 +91,14 @@ analysis_df['Net Exports not seas. adj'] = analysis_df['Exports Merchandise, Cus
 analysis_df['Lag Net Exports not seas. adj'] = analysis_df.groupby("Country Code")['Net Exports not seas. adj'].shift(1)
 analysis_df['Lag Exports not seas. adj'] = analysis_df.groupby("Country Code")['Exports Merchandise, Customs, current US$, millions, not seas. adj. [DXGSRMRCHNSCD]'].shift(1)
 analysis_df['Lag Imports not seas. adj'] = analysis_df.groupby("Country Code")['Imports Merchandise, Customs, current US$, millions, not seas. adj. [DMGSRMRCHNSCD]'].shift(1)
-analysis_df["Official exchange rate percent change"] = analysis_df.groupby("Country Code")["Official exchange rate, LCU per USD, period average,, [DPANUSLCU]"].pct_change() * 100
+analysis_df["Official Exchange Rate percent change"] = analysis_df.groupby("Country Code")["Official exchange rate, LCU per USD, period average,, [DPANUSLCU]"].pct_change() * 100
 analysis_df["Nominal Effective Exchange Rate percent change"] = analysis_df.groupby("Country Code")["Nominal Effective Exchange Rate,,,, [NEER]"].pct_change() * 100
 analysis_df["Real Effective Exchange Rate percent change"] = analysis_df.groupby("Country Code")["Real Effective Exchange Rate,,,, [REER]"].pct_change() * 100
 analysis_df["Net Exports percent change"] = analysis_df.groupby("Country Code")["Net Exports not seas. adj"].pct_change() * 100
 analysis_df.reset_index()
-# analysis_df = analysis_df.dropna(subset=['Lag Net Exports seas. adj', 'Lag Net Exports not seas. adj', "Official exchange rate percent change"])
+print(analysis_df.groupby("Country Code").apply(lambda x: x.isnull().sum().sum()))
+analysis_df = analysis_df.dropna()
+
 
 # analysis_df['ln_Net_Exports seas. adj'] = np.log(analysis_df['Net Exports seas. adj'])
 # analysis_df['ln_Net_Exports not seas. adj'] = np.log(analysis_df['Net Exports not seas. adj'])
@@ -118,15 +120,14 @@ analysis_df.loc[(analysis_df['Month'] >= 6) & (analysis_df['Month'] <= 8), 'Seas
 analysis_df.loc[(analysis_df['Month'] >= 9) & (analysis_df['Month'] <= 11), 'Season'] = 'Autumn'
 season_dummies = pd.get_dummies(analysis_df['Season'], drop_first=True)
 analysis_df = pd.concat([analysis_df, season_dummies], axis=1)
+print(analysis_df.groupby("Country Code").apply(lambda x: x.isnull().sum().sum()))
 
 display(season_dummies.head(3))
-# Set the MultiIndex for panel data: Country Code and Time
-analysis_df = analysis_df.set_index(["Country Code", "Time"])
 analysis_df.to_excel("data/EU_analysis_data.xlsx")
 
-# plt.scatter(analysis_df['Official exchange rate percent change'])
-# plt.title('Scatterplot for Official exchange rate percent change')
-# plt.ylabel('Official exchange rate percent change')
+# plt.scatter(analysis_df['Official Exchange Rate percent change'])
+# plt.title('Scatterplot for Official Exchange Rate percent change')
+# plt.ylabel('Official Exchange Rate percent change')
 # plt.savefig('results/official_exchange_rate_percent_change_boxplot.png')
 
 # plt.scatter(analysis_df['Real Effective Exchange Rate percent change'])
@@ -139,107 +140,107 @@ analysis_df.to_excel("data/EU_analysis_data.xlsx")
 # plt.ylabel('Nominal Effective Exchange Rate percent change')
 # plt.savefig('results/nominal_exchange_rate_percent_change_boxplot.png')
 
-Q1 = analysis_df['Official exchange rate percent change'].quantile(0.25)
-Q3 = analysis_df['Official exchange rate percent change'].quantile(0.75)
-IQR = Q3 - Q1
+# Q1 = analysis_df['Official Exchange Rate percent change'].quantile(0.25)
+# Q3 = analysis_df['Official Exchange Rate percent change'].quantile(0.75)
+# IQR = Q3 - Q1
 
-lower_bound = Q1 - 1.5 * IQR
-upper_bound = Q3 + 1.5 * IQR
+# lower_bound = Q1 - 1.5 * IQR
+# upper_bound = Q3 + 1.5 * IQR
 
-analysis_df = analysis_df[(analysis_df['Official exchange rate percent change'] > lower_bound) & (analysis_df['Official exchange rate percent change'] < upper_bound)]
+# analysis_df = analysis_df[(analysis_df['Official Exchange Rate percent change'] > lower_bound) & (analysis_df['Official Exchange Rate percent change'] < upper_bound)]
 
 
 
-# Specify the independent variables.
-# Adjust the variable names to match your actual DataFrame columns.
-exog_vars = ['ln_lag_exports', "Official exchange rate percent change", 'CPI Price, % y-o-y, not seas. adj.,, [CPTOTSAXNZGY]', 'ln_Industial_Production not seas. adj', 'ln_Labor', "GDP growth (annual %) [NY.GDP.MKTP.KD.ZG]", "GDP per capita growth (annual %) [NY.GDP.PCAP.KD.ZG]", "Winter", "Spring", "Summer"]
+# # Specify the independent variables.
+# # Adjust the variable names to match your actual DataFrame columns.
+# exog_vars = ['ln_lag_exports', "Official Exchange Rate percent change", 'CPI Price, % y-o-y, not seas. adj.,, [CPTOTSAXNZGY]', 'ln_Industial_Production not seas. adj', 'ln_Labor', "GDP growth (annual %) [NY.GDP.MKTP.KD.ZG]", "GDP per capita growth (annual %) [NY.GDP.PCAP.KD.ZG]", "Exports of goods and services (% of GDP) [NE.EXP.GNFS.ZS]", "Imports of goods and services (% of GDP) [NE.IMP.GNFS.ZS]", "Winter", "Spring", "Summer"]
 
-# # print("STD and Corr 1:")
-# # print(analysis_df.groupby("Country Code")[exog_vars].std())
-# # print(analysis_df[exog_vars].corr())
+# # # print("STD and Corr 1:")
+# # # print(analysis_df.groupby("Country Code")[exog_vars].std())
+# # # print(analysis_df[exog_vars].corr())
 
-# Create the exogenous DataFrame and add a constant.
-exog = analysis_df[exog_vars]
-exog = sm.add_constant(exog)
+# # Create the exogenous DataFrame and add a constant.
+# exog = analysis_df[exog_vars]
+# exog = sm.add_constant(exog)
 
-# Define the dependent variable.
-dep = analysis_df['ln_exports']
+# # Define the dependent variable.
+# dep = analysis_df['ln_exports']
 
-# Run the PanelOLS model with entity (country) and time fixed effects.
-model = PanelOLS(
-    dependent=dep, 
-    exog=exog, 
-    entity_effects=True
-)
-results = model.fit(cov_type='clustered', cluster_entity=True)
-print(results.summary)
+# # Run the PanelOLS model with entity (country) and time fixed effects.
+# model = PanelOLS(
+#     dependent=dep, 
+#     exog=exog, 
+#     entity_effects=True
+# )
+# results = model.fit(cov_type='clustered', cluster_entity=True)
+# print(results.summary)
 
-exog_vars_2 = ['Lag Net Exports not seas. adj', "Official exchange rate percent change", 'CPI Price, % y-o-y, not seas. adj.,, [CPTOTSAXNZGY]', 'ln_Labor', "GDP growth (annual %) [NY.GDP.MKTP.KD.ZG]", "GDP per capita growth (annual %) [NY.GDP.PCAP.KD.ZG]", "Exports of goods and services (% of GDP) [NE.EXP.GNFS.ZS]", "Imports of goods and services (% of GDP) [NE.IMP.GNFS.ZS]", "Unemployment, total (% of total labor force) (modeled ILO estimate) [SL.UEM.TOTL.ZS]","Winter", "Spring", "Summer"]
+# exog_vars_2 = ['ln_lag_imports', "Official Exchange Rate percent change", 'CPI Price, % y-o-y, not seas. adj.,, [CPTOTSAXNZGY]', 'ln_Labor', "GDP growth (annual %) [NY.GDP.MKTP.KD.ZG]", "GDP per capita growth (annual %) [NY.GDP.PCAP.KD.ZG]", "Exports of goods and services (% of GDP) [NE.EXP.GNFS.ZS]", "Imports of goods and services (% of GDP) [NE.IMP.GNFS.ZS]", "Unemployment, total (% of total labor force) (modeled ILO estimate) [SL.UEM.TOTL.ZS]","Winter", "Spring", "Summer"]
+
+# # with open("results/STD_Corr_2.txt", "w") as f:
+# #     f.write("Standard Deviation by Country:\n")
+# #     std_text = analysis_df.groupby("Country Code")[exog_vars_2].std().to_string()
+# #     f.write(std_text)
+# #     f.write("\n\nCorrelation Matrix:\n")
+# #     corr_text = analysis_df[exog_vars_2].corr().to_string()
+# #     f.write(corr_text)
+
+# # # print("STD and Corr 2:")
+# # # print(analysis_df.groupby("Country Code")[exog_vars_2].std())
+# # # print(analysis_df[exog_vars_2].corr())
+
+# # Create the exogenous DataFrame and add a constant.
+# exog_2 = analysis_df[exog_vars_2]
+# exog_2 = sm.add_constant(exog_2)
+
+# # Define the dependent variable.
+# dep_2 = analysis_df['ln_imports']
+
+# # Run the PanelOLS model with entity (country) and time fixed effects.
+# model_2 = PanelOLS(
+#     dependent=dep_2, 
+#     exog=exog_2, 
+#     entity_effects=True
+# )
+# results_2 = model_2.fit(cov_type='clustered', cluster_entity=True)
+# print(results_2.summary)
+
+# exog_vars_3 = ['Lag Net Exports not seas. adj', "Real Effective Exchange Rate,,,, [REER]", "Official exchange rate, LCU per USD, period average,, [DPANUSLCU]", 'CPI Price, % y-o-y, not seas. adj.,, [CPTOTSAXNZGY]', 'ln_Labor', "GDP growth (annual %) [NY.GDP.MKTP.KD.ZG]", "GDP per capita growth (annual %) [NY.GDP.PCAP.KD.ZG]", "Exports of goods and services (% of GDP) [NE.EXP.GNFS.ZS]", "Imports of goods and services (% of GDP) [NE.IMP.GNFS.ZS]", "Unemployment, total (% of total labor force) (modeled ILO estimate) [SL.UEM.TOTL.ZS]","Winter", "Spring", "Summer"]
 
 # with open("results/STD_Corr_2.txt", "w") as f:
 #     f.write("Standard Deviation by Country:\n")
-#     std_text = analysis_df.groupby("Country Code")[exog_vars_2].std().to_string()
+#     std_text = analysis_df.groupby("Country Code")[exog_vars_3].std().to_string()
 #     f.write(std_text)
 #     f.write("\n\nCorrelation Matrix:\n")
-#     corr_text = analysis_df[exog_vars_2].corr().to_string()
+#     corr_text = analysis_df[exog_vars_3].corr().to_string()
 #     f.write(corr_text)
 
-# # print("STD and Corr 2:")
-# # print(analysis_df.groupby("Country Code")[exog_vars_2].std())
-# # print(analysis_df[exog_vars_2].corr())
+# # print("STD and Corr 3:")
+# # print(analysis_df.groupby("Country Code")[exog_vars_3].std())
+# # print(analysis_df[exog_vars_3].corr())
 
-# Create the exogenous DataFrame and add a constant.
-exog_2 = analysis_df[exog_vars_2]
-exog_2 = sm.add_constant(exog_2)
+# # Create the exogenous DataFrame and add a constant.
+# exog_3 = analysis_df[exog_vars_3]
+# exog_3 = sm.add_constant(exog_3)
 
-# Define the dependent variable.
-dep_2 = analysis_df['Net Exports not seas. adj']
+# # Define the dependent variable.
+# dep_3 = analysis_df['Net Exports not seas. adj']
 
-# Run the PanelOLS model with entity (country) and time fixed effects.
-model_2 = PanelOLS(
-    dependent=dep_2, 
-    exog=exog_2, 
-    entity_effects=True
-)
-results_2 = model_2.fit(cov_type='clustered', cluster_entity=True)
-print(results_2.summary)
+# # Run the PanelOLS model with entity (country) and time fixed effects.
+# model_3 = PanelOLS(
+#     dependent=dep_3, 
+#     exog=exog_3, 
+#     entity_effects=True
+# )
+# results_3 = model_3.fit(cov_type='clustered', cluster_entity=True)
+# print(results_3.summary)
 
-exog_vars_3 = ['Lag Net Exports not seas. adj', "Real Effective Exchange Rate,,,, [REER]", "Official exchange rate, LCU per USD, period average,, [DPANUSLCU]", 'CPI Price, % y-o-y, not seas. adj.,, [CPTOTSAXNZGY]', 'ln_Labor', "GDP growth (annual %) [NY.GDP.MKTP.KD.ZG]", "GDP per capita growth (annual %) [NY.GDP.PCAP.KD.ZG]", "Exports of goods and services (% of GDP) [NE.EXP.GNFS.ZS]", "Imports of goods and services (% of GDP) [NE.IMP.GNFS.ZS]", "Unemployment, total (% of total labor force) (modeled ILO estimate) [SL.UEM.TOTL.ZS]","Winter", "Spring", "Summer"]
+# with open("results/analysis_summary.txt", "w") as f:
+#     f.write(results.summary.as_text())
+# with open("results/analysis_summary_2.txt", "w") as f:
+#     f.write(results_2.summary.as_text())
+# with open("results/analysis_summary_3.txt", "w") as f:
+#     f.write(results_3.summary.as_text())
 
-with open("results/STD_Corr_2.txt", "w") as f:
-    f.write("Standard Deviation by Country:\n")
-    std_text = analysis_df.groupby("Country Code")[exog_vars_3].std().to_string()
-    f.write(std_text)
-    f.write("\n\nCorrelation Matrix:\n")
-    corr_text = analysis_df[exog_vars_3].corr().to_string()
-    f.write(corr_text)
-
-# print("STD and Corr 3:")
-# print(analysis_df.groupby("Country Code")[exog_vars_3].std())
-# print(analysis_df[exog_vars_3].corr())
-
-# Create the exogenous DataFrame and add a constant.
-exog_3 = analysis_df[exog_vars_3]
-exog_3 = sm.add_constant(exog_3)
-
-# Define the dependent variable.
-dep_3 = analysis_df['Net Exports not seas. adj']
-
-# Run the PanelOLS model with entity (country) and time fixed effects.
-model_3 = PanelOLS(
-    dependent=dep_3, 
-    exog=exog_3, 
-    entity_effects=True
-)
-results_3 = model_3.fit(cov_type='clustered', cluster_entity=True)
-print(results_3.summary)
-
-with open("results/analysis_summary.txt", "w") as f:
-    f.write(results.summary.as_text())
-with open("results/analysis_summary_2.txt", "w") as f:
-    f.write(results_2.summary.as_text())
-with open("results/analysis_summary_3.txt", "w") as f:
-    f.write(results_3.summary.as_text())
-
-# print(results.summary)
-display(analysis_df.head(3))
+# # print(results.summary)
+# display(analysis_df.head(3))
