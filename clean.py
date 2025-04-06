@@ -23,6 +23,7 @@ WDI_df["Year"] = pd.to_numeric(WDI_df["Year"], errors='coerce')
 WDI_df['Country Code'] = WDI_df['Country Code'].astype(str)
 
 df = pd.merge(GEM_df, WDI_df, on=["Year", "Country Code"], how="left")
+df.to_excel("data/EU_joined_data.xlsx")
 
 # print(GEM_df[['Year', 'Country Code']].dtypes)
 # print(WDI_df.reset_index()[['Year', 'Country Code']].dtypes)
@@ -48,6 +49,8 @@ joined_df['Time'] = joined_df['Time'].astype("string")
 joined_df['Country Code'] = joined_df['Country Code'].astype("string")
 joined_df['Country'] = joined_df['Country'].astype("string")
 
+count_countries = joined_df["Country Code"].value_counts()
+print("Number of countries:", len(count_countries))
 
 joined_df = joined_df[~joined_df['Country Code'].isin(['EST', 'MLT', 'LTU', 'HRV', 'CYP', 'CZE', 'GRC', 'SVK', 'AUT', 'FRA', 'HUN', 'YUG', 'CHE', 'GEO', 'RUS', 'BGR', 'SVN', 'DNK', 'ISL', 'GBR'])]
 joined_df = joined_df[~joined_df['Country Code'].isin(['ARE', 'ARG', 'AUS', 'BRA', 'JPN', 'MYS', 'NZL', 'PHL', 'USA'])]

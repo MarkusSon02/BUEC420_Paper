@@ -1,22 +1,4 @@
-                          PanelOLS Estimation Summary                           
-================================================================================
-Dep. Variable:             ln_imports   R-squared:                        0.5247
-Estimator:                   PanelOLS   R-squared (Between):              0.6344
-No. Observations:                2247   R-squared (Within):               0.5247
-Date:                Sat, Mar 29 2025   R-squared (Overall):              0.6325
-Time:                        23:14:30   Log-likelihood                    2338.3
-Cov. Estimator:             Clustered                                           
-                                        F-statistic:                      244.62
-Entities:                          21   P-value                           0.0000
-Avg Obs:                       107.00   Distribution:                 F(10,2216)
-Min Obs:                       107.00                                           
-Max Obs:                       107.00   F-statistic (robust):             109.26
-                                        P-value                           0.0000
-Time periods:                     107   Distribution:                 F(10,2216)
-Avg Obs:                       21.000                                           
-Min Obs:                       21.000                                           
-Max Obs:                       21.000                                           
-                                                                                
+                           
                                       Parameter Estimates                                       
 ================================================================================================
                               Parameter  Std. Err.     T-stat    P-value    Lower CI    Upper CI
@@ -40,5 +22,4 @@ summer                          -0.0444     0.0101    -4.4048     0.0000     -0.
 F-test for Poolability: 30.768
 P-value: 0.0000
 Distribution: F(20,2216)
-
 Included effects: Entity
