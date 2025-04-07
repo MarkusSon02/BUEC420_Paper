@@ -1,0 +1,41 @@
+                            PanelOLS Estimation Summary                             
+====================================================================================
+Dep. Variable:     Imports percent change   R-squared:                        0.0720
+Estimator:                       PanelOLS   R-squared (Between):             -122.63
+No. Observations:                    2247   R-squared (Within):               0.0720
+Date:                    Sun, Apr 06 2025   R-squared (Overall):             -0.0778
+Time:                            11:52:31   Log-likelihood                   -8315.1
+Cov. Estimator:                 Clustered                                           
+                                            F-statistic:                      17.199
+Entities:                              21   P-value                           0.0000
+Avg Obs:                           107.00   Distribution:                 F(10,2216)
+Min Obs:                           107.00                                           
+Max Obs:                           107.00   F-statistic (robust):             34.872
+                                            P-value                           0.0000
+Time periods:                         107   Distribution:                 F(10,2216)
+Avg Obs:                           21.000                                           
+Min Obs:                           21.000                                           
+Max Obs:                           21.000                                           
+                                                                                    
+                                           Parameter Estimates                                           
+=========================================================================================================
+                                       Parameter  Std. Err.     T-stat    P-value    Lower CI    Upper CI
+---------------------------------------------------------------------------------------------------------
+const                                     50.840     16.689     3.0463     0.0023      18.112      83.567
+official_exchange_rate_percent_change    -0.6914     0.0808    -8.5538     0.0000     -0.8500     -0.5329
+CPI_percent_change                        0.0753     0.0429     1.7542     0.0795     -0.0089      0.1595
+ln_labor                                 -2.8629     1.0292    -2.7816     0.0055     -4.8813     -0.8445
+GDP_anual_growth                          0.0798     0.1044     0.7642     0.4448     -0.1249      0.2844
+GDP_per_capita_annual_growth             -0.0013     0.0914    -0.0138     0.9890     -0.1805      0.1780
+import_share_of_GDP                      -0.0217     0.0068    -3.1772     0.0015     -0.0351     -0.0083
+unemployment_rate                        -0.0344     0.0323    -1.0648     0.2871     -0.0977      0.0289
+winter                                   -4.8989     0.7203    -6.8012     0.0000     -6.3114     -3.4864
+spring                                    0.1027     0.6797     0.1511     0.8799     -1.2302      1.4356
+summer                                   -4.5894     1.1369    -4.0369     0.0001     -6.8189     -2.3600
+=========================================================================================================
+
+F-test for Poolability: 0.1126
+P-value: 1.0000
+Distribution: F(20,2216)
+
+Included effects: Entity

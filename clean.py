@@ -98,6 +98,8 @@ analysis_df["Official Exchange Rate percent change"] = analysis_df.groupby("Coun
 analysis_df["Nominal Effective Exchange Rate percent change"] = analysis_df.groupby("Country Code")["Nominal Effective Exchange Rate,,,, [NEER]"].pct_change() * 100
 analysis_df["Real Effective Exchange Rate percent change"] = analysis_df.groupby("Country Code")["Real Effective Exchange Rate,,,, [REER]"].pct_change() * 100
 analysis_df["Net Exports percent change"] = analysis_df.groupby("Country Code")["Net Exports not seas. adj"].pct_change() * 100
+analysis_df["Exports percent change"] = analysis_df.groupby("Country Code")['Exports Merchandise, Customs, current US$, millions, not seas. adj. [DXGSRMRCHNSCD]'].pct_change() * 100
+analysis_df["Imports percent change"] = analysis_df.groupby("Country Code")['Imports Merchandise, Customs, current US$, millions, not seas. adj. [DMGSRMRCHNSCD]'].pct_change() * 100
 analysis_df.reset_index()
 print(analysis_df.groupby("Country Code").apply(lambda x: x.isnull().sum().sum()))
 analysis_df = analysis_df.dropna()
@@ -116,6 +118,8 @@ analysis_df['ln_exports'] = np.log(analysis_df['Exports Merchandise, Customs, cu
 analysis_df['ln_imports'] = np.log(analysis_df['Imports Merchandise, Customs, current US$, millions, not seas. adj. [DMGSRMRCHNSCD]'])
 analysis_df['ln_lag_exports'] = np.log(analysis_df['Lag Exports not seas. adj'])
 analysis_df['ln_lag_imports'] = np.log(analysis_df['Lag Imports not seas. adj'])
+analysis_df['ln_exports_change'] = analysis_df['ln_exports'] - analysis_df['ln_lag_exports']
+analysis_df['ln_imports_change'] = analysis_df['ln_imports'] - analysis_df['ln_lag_imports']
 
 analysis_df['Season'] = 'Winter'
 analysis_df.loc[(analysis_df['Month'] >= 3) & (analysis_df['Month'] <= 5), 'Season'] = 'Spring'
