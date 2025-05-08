@@ -100,6 +100,7 @@ analysis_df["Real Effective Exchange Rate percent change"] = analysis_df.groupby
 analysis_df["Net Exports percent change"] = analysis_df.groupby("Country Code")["Net Exports not seas. adj"].pct_change() * 100
 analysis_df["Exports percent change"] = analysis_df.groupby("Country Code")['Exports Merchandise, Customs, current US$, millions, not seas. adj. [DXGSRMRCHNSCD]'].pct_change() * 100
 analysis_df["Imports percent change"] = analysis_df.groupby("Country Code")['Imports Merchandise, Customs, current US$, millions, not seas. adj. [DMGSRMRCHNSCD]'].pct_change() * 100
+analysis_df['Lag Official Exchange Rate percent change'] = analysis_df.groupby("Country Code")['Official Exchange Rate percent change'].shift(1)
 analysis_df.reset_index()
 print(analysis_df.groupby("Country Code").apply(lambda x: x.isnull().sum().sum()))
 analysis_df = analysis_df.dropna()
@@ -127,9 +128,14 @@ analysis_df.loc[(analysis_df['Month'] >= 6) & (analysis_df['Month'] <= 8), 'Seas
 analysis_df.loc[(analysis_df['Month'] >= 9) & (analysis_df['Month'] <= 11), 'Season'] = 'Autumn'
 season_dummies = pd.get_dummies(analysis_df['Season'], drop_first=True)
 analysis_df = pd.concat([analysis_df, season_dummies], axis=1)
+
+year_dummies = pd.get_dummies(analysis_df['Year'].astype(str).str[:-2], drop_first=True)
+analysis_df = pd.concat([analysis_df, year_dummies], axis=1)
+analysis_df = analysis_df.dropna()
 print(analysis_df.groupby("Country Code").apply(lambda x: x.isnull().sum().sum()))
 
 display(season_dummies.head(3))
+display(year_dummies.head(3))
 analysis_df.to_excel("data/EU_analysis_data.xlsx")
 
 # plt.scatter(analysis_df['Official Exchange Rate percent change'])

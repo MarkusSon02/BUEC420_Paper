@@ -1,18 +1,18 @@
                           PanelOLS Estimation Summary                           
 ================================================================================
-Dep. Variable:      ln_imports_change   R-squared:                        0.0693
-Estimator:                   PanelOLS   R-squared (Between):             -733.12
-No. Observations:                2247   R-squared (Within):               0.0693
-Date:                Sun, Apr 06 2025   R-squared (Overall):             -0.1628
-Time:                        13:07:15   Log-likelihood                    2071.2
+Dep. Variable:      ln_imports_change   R-squared:                        0.0738
+Estimator:                   PanelOLS   R-squared (Between):              0.5039
+No. Observations:                2226   R-squared (Within):               0.0737
+Date:                Fri, Apr 11 2025   R-squared (Overall):              0.0738
+Time:                        23:02:01   Log-likelihood                    2049.4
 Cov. Estimator:             Clustered                                           
-                                        F-statistic:                      16.508
+                                        F-statistic:                      9.7728
 Entities:                          21   P-value                           0.0000
-Avg Obs:                       107.00   Distribution:                 F(10,2216)
-Min Obs:                       107.00                                           
-Max Obs:                       107.00   F-statistic (robust):             60.281
+Avg Obs:                       106.00   Distribution:                 F(18,2207)
+Min Obs:                       106.00                                           
+Max Obs:                       106.00   F-statistic (robust):             305.18
                                         P-value                           0.0000
-Time periods:                     107   Distribution:                 F(10,2216)
+Time periods:                     106   Distribution:                 F(18,2207)
 Avg Obs:                       21.000                                           
 Min Obs:                       21.000                                           
 Max Obs:                       21.000                                           
@@ -21,21 +21,24 @@ Max Obs:                       21.000
 =========================================================================================================
                                        Parameter  Std. Err.     T-stat    P-value    Lower CI    Upper CI
 ---------------------------------------------------------------------------------------------------------
-const                                     0.5984     0.2235     2.6775     0.0075      0.1601      1.0367
-official_exchange_rate_percent_change    -0.0067     0.0008    -8.4492     0.0000     -0.0082     -0.0051
-CPI_percent_change                        0.0009     0.0004     2.4732     0.0135      0.0002      0.0016
-ln_labor                                 -0.0343     0.0138    -2.4888     0.0129     -0.0613     -0.0073
-GDP_anual_growth                          0.0005     0.0010     0.5152     0.6065     -0.0014      0.0024
-GDP_per_capita_annual_growth              0.0003     0.0009     0.3596     0.7192     -0.0015      0.0021
-import_share_of_GDP                      -0.0003  6.332e-05    -4.5213     0.0000     -0.0004     -0.0002
-unemployment_rate                        -0.0004     0.0002    -1.4706     0.1416     -0.0009      0.0001
-winter                                   -0.0466     0.0071    -6.5838     0.0000     -0.0605     -0.0328
-spring                                    0.0010     0.0064     0.1553     0.8766     -0.0116      0.0136
-summer                                   -0.0445     0.0112    -3.9855     0.0001     -0.0664     -0.0226
+const                                     0.0397     0.0081     4.8946     0.0000      0.0238      0.0557
+official_exchange_rate_percent_change    -0.0068     0.0009    -7.8793     0.0000     -0.0085     -0.0051
+CPI_percent_change                        0.0006     0.0003     1.7292     0.0839  -8.062e-05      0.0013
+ln_labor                                 -0.0004     0.0003    -1.1119     0.2663     -0.0010      0.0003
+GDP_annual_growth                      4.055e-05     0.0005     0.0765     0.9390     -0.0010      0.0011
+GDP_per_capita_annual_growth              0.0006     0.0005     1.2262     0.2203     -0.0004      0.0016
+import_share_of_GDP                    -1.35e-05  6.735e-06    -2.0042     0.0452   -2.67e-05  -2.905e-07
+unemployment_rate                      1.787e-05  5.587e-05     0.3198     0.7492  -9.169e-05      0.0001
+winter                                   -0.0482     0.0075    -6.4486     0.0000     -0.0629     -0.0336
+spring                                    0.0009     0.0065     0.1459     0.8840     -0.0118      0.0136
+summer                                   -0.0446     0.0112    -3.9731     0.0001     -0.0665     -0.0226
+2011                                     -0.0082     0.0027    -3.0692     0.0022     -0.0135     -0.0030
+2012                                     -0.0158     0.0017    -9.0618     0.0000     -0.0193     -0.0124
+2013                                     -0.0092     0.0018    -5.1894     0.0000     -0.0126     -0.0057
+2014                                     -0.0113     0.0022    -5.2364     0.0000     -0.0156     -0.0071
+2015                                     -0.0136     0.0034    -3.9952     0.0001     -0.0203     -0.0069
+2016                                     -0.0076     0.0023    -3.3870     0.0007     -0.0121     -0.0032
+2017                                     -0.0068     0.0018    -3.6936     0.0002     -0.0103     -0.0032
+2018                                     -0.0105     0.0019    -5.6648     0.0000     -0.0142     -0.0069
 =========================================================================================================
 
-F-test for Poolability: 0.0520
-P-value: 1.0000
-Distribution: F(20,2216)
-
-Included effects: Entity

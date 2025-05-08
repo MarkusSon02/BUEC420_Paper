@@ -11,7 +11,7 @@ analysis_df = analysis_df.set_index(["Country Code", "Time"])
 
 # Specify the independent variables.
 # Adjust the variable names to match your actual DataFrame columns.
-exog_vars = ['ln_lag_exports', "Official Exchange Rate percent change", 'CPI Price, % y-o-y, not seas. adj.,, [CPTOTSAXNZGY]', 'ln_Labor', "GDP growth (annual %) [NY.GDP.MKTP.KD.ZG]", "GDP per capita growth (annual %) [NY.GDP.PCAP.KD.ZG]", "Exports of goods and services (% of GDP) [NE.EXP.GNFS.ZS]",  "Unemployment, total (% of total labor force) (modeled ILO estimate) [SL.UEM.TOTL.ZS]", "Winter", "Spring", "Summer"]
+exog_vars = ['ln_lag_exports', "Official Exchange Rate percent change", 'CPI Price, % y-o-y, not seas. adj.,, [CPTOTSAXNZGY]', 'ln_Labor', "GDP growth (annual %) [NY.GDP.MKTP.KD.ZG]", "GDP per capita growth (annual %) [NY.GDP.PCAP.KD.ZG]", "Exports of goods and services (% of GDP) [NE.EXP.GNFS.ZS]",  "Unemployment, total (% of total labor force) (modeled ILO estimate) [SL.UEM.TOTL.ZS]", "Winter", "Spring", "Summer", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018"]
 
 # # print("STD and Corr 1:")
 # # print(analysis_df.groupby("Country Code")[exog_vars].std())
@@ -20,7 +20,7 @@ exog_vars = ['ln_lag_exports', "Official Exchange Rate percent change", 'CPI Pri
 # Create the exogenous DataFrame and add a constant.
 exog = analysis_df[exog_vars]
 
-exog.columns = ['ln_lag_exports', 'official_exchange_rate_percent_change', 'CPI_percent_change', 'ln_labor', 'GDP_anual_growth', 'GDP_per_capita_annual_growth', 'export_share_of_GDP', 'unemployment_rate', 'winter', 'spring', 'summer']
+exog.columns = ['ln_lag_exports', 'official_exchange_rate_percent_change', 'CPI_percent_change', 'ln_labor', 'GDP_annual_growth', 'GDP_per_capita_annual_growth', 'export_share_of_GDP', 'unemployment_rate', 'winter', 'spring', 'summer', "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018"]
 
 exog = sm.add_constant(exog)
 
@@ -36,14 +36,14 @@ model = PanelOLS(
 results = model.fit(cov_type='clustered', cluster_entity=True)
 print(results.summary)
 
-exog_vars_2 = ['ln_lag_imports', "Official Exchange Rate percent change", 'CPI Price, % y-o-y, not seas. adj.,, [CPTOTSAXNZGY]', 'ln_Labor', "GDP growth (annual %) [NY.GDP.MKTP.KD.ZG]", "GDP per capita growth (annual %) [NY.GDP.PCAP.KD.ZG]", "Imports of goods and services (% of GDP) [NE.IMP.GNFS.ZS]", "Unemployment, total (% of total labor force) (modeled ILO estimate) [SL.UEM.TOTL.ZS]", "Winter", "Spring", "Summer"]
+exog_vars_2 = ['ln_lag_imports', "Official Exchange Rate percent change", 'CPI Price, % y-o-y, not seas. adj.,, [CPTOTSAXNZGY]', 'ln_Labor', "GDP growth (annual %) [NY.GDP.MKTP.KD.ZG]", "GDP per capita growth (annual %) [NY.GDP.PCAP.KD.ZG]", "Imports of goods and services (% of GDP) [NE.IMP.GNFS.ZS]", "Unemployment, total (% of total labor force) (modeled ILO estimate) [SL.UEM.TOTL.ZS]", "Winter", "Spring", "Summer", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018"]
 
 
 
 # Create the exogenous DataFrame and add a constant.
 exog_2 = analysis_df[exog_vars_2]
 
-exog_2.columns = ['ln_lag_imports', 'official_exchange_rate_percent_change', 'CPI_percent_change', 'ln_labor', 'GDP_anual_growth', 'GDP_per_capita_annual_growth', 'import_share_of_GDP', 'unemployment_rate', 'winter', 'spring', 'summer']
+exog_2.columns = ['ln_lag_imports', 'official_exchange_rate_percent_change', 'CPI_percent_change', 'ln_labor', 'GDP_annual_growth', 'GDP_per_capita_annual_growth', 'import_share_of_GDP', 'unemployment_rate', 'winter', 'spring', 'summer', "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018"]
 
 exog_2 = sm.add_constant(exog_2)
 
